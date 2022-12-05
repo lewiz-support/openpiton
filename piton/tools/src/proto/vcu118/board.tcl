@@ -28,7 +28,7 @@
 # Not intended to be run standalone
 #
 
-set BOARD_PART ""
+set BOARD_PART "xilinx.com:vcu118:part0:2.4"
 set FPGA_PART "xcvu9p-flga2104-2L-e"
 set VIVADO_FLOW_PERF_OPT 0
 set BOARD_DEFAULT_VERILOG_MACROS "VCU118_BOARD"

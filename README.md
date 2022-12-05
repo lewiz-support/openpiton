@@ -1,3 +1,15 @@
+# OpenPiton With OX Remote Agent Integration
+
+The OmniXtend core (developed by LeWiz) is released under [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0). See [the master repository](https://github.com/lewiz-support/OmniXtend_RemoteAgent_RISC-V) for further documentation.
+
+Any other work(s) not mentioned above which had been developed by LeWiz and contained in this release are also released under Apache 2.0 license.
+As such this work is released on an **AS-IS** basis and 
+
+**NO WARRANTY of ANY KIND** is provided and 
+
+**NO LIABILITY of ANY KIND** is assumed by LeWiz.
+
+
 ![OpenPiton Logo](/docs/openpiton_logo_black.png?raw=true)
 
 # OpenPiton Research Platform   [![Build Status](https://jenkins.princeton.edu/buildStatus/icon?job=cloud/piton_git_push_master)](https://jenkins.princeton.edu/job/cloud/job/piton_git_push_master/)

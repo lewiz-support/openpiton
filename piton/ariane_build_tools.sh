@@ -96,8 +96,8 @@ else
   make install
   cd ${PITON_ROOT}
 
-  #apply gen_rom "patch"
-  piton/tools/patch/gen_rom/apply.sh
+  #apply patches
+  piton/tools/patch/apply_all.sh
 
   echo
   echo "----------------------------------------------------------------------"

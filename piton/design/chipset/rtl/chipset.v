@@ -85,6 +85,20 @@
 
 
 module chipset(
+    //// vv
+`ifdef OXAGENT_EN
+    // LeWiz Added I/O for OXBridge
+    // TX Path
+    output  [63:0]                              chip2ox_noc_data,
+    output                                      chip2ox_noc_valid,
+    input                                       chip2ox_noc_rdy,
+
+    // RX Path
+    input   [63:0]                              ox2chip_noc_data,
+    input                                       ox2chip_noc_valid,
+    output                                      ox2chip_noc_rdy,
+`endif // OXAGENT_EN
+    //// ^^
 
 `ifdef F1_BOARD
     input sys_clk,
@@ -226,7 +240,7 @@ module chipset(
 `ifdef PITONSYS_DDR4
     output                                      ddr_act_n,
     output [`DDR3_BG_WIDTH-1:0]                 ddr_bg,
-`else // PITONSYS_DDR4           
+`else // PITONSYS_DDR4
     output                                      ddr_cas_n,
     output                                      ddr_ras_n,
     output                                      ddr_we_n,
@@ -355,7 +369,7 @@ module chipset(
         inout                                           net_phy_mdio_io,
         output                                          net_phy_mdc,
 
-    `endif // PITON_FPGA_ETHERNETLITE    
+    `endif // PITON_FPGA_ETHERNETLITE
 `else // ifndef PITONSYS_IOCTRL
 
 `endif // endif PITONSYS_IOCTRL
@@ -455,7 +469,7 @@ module chipset(
         input                                               btnr,
         input                                               btnu,
         input                                               btnd,
-        input                                               btnc,           
+        input                                               btnc,
     `endif
 
     // Switches
@@ -464,13 +478,13 @@ module chipset(
         input  [3:0]                                        sw,
     `elsif XUPP3R_BOARD
         // no switches :(
-    `else         
+    `else
         input  [7:0]                                        sw,
     `endif
 
     `ifdef XUPP3R_BOARD
      output [3:0]                                           leds
-    `else 
+    `else
      output [7:0]                                           leds
      `endif
 
@@ -751,10 +765,10 @@ end
             `elsif XUPP3R_BOARD
                 assign uart_boot_en    = 1'b1;
                 assign uart_timeout_en = 1'b0;
-            `else 
+            `else
                 assign uart_boot_en    = sw[7];
                 assign uart_timeout_en = sw[6];
-            `endif    
+            `endif
         `endif // endif PITONSYS_UART_BOOT
     `endif // endif PITONSYS_UART
 `endif // endif PITONSYS_IOCTRL
@@ -766,9 +780,9 @@ end
     `elsif XUPP3R_BOARD
         // no switches :(
         assign noc_power_test_hop_count = 4'b0;
-    `else 
+    `else
         assign noc_power_test_hop_count = sw[3:0];
-    `endif    
+    `endif
 `endif // endif PITON_NOC_POWER_CHIPSET_TEST
 
 `ifdef PITON_BOARD
@@ -1237,6 +1251,18 @@ chipset_impl_noc_power_test  chipset_impl (
     .noc_power_test_hop_count (noc_power_test_hop_count),
 `endif
 
+    //// vv
+    `ifdef OXAGENT_EN
+    .chip2ox_noc_data                  (chip2ox_noc_data ),      // o-64 noc out data
+    .chip2ox_noc_valid                 (chip2ox_noc_valid),      // o-1  noc out valid
+    .chip2ox_noc_rdy                   (chip2ox_noc_rdy  ),      // i-1  noc out ready
+
+    .ox2chip_noc_data                  (ox2chip_noc_data ),      // i-64 noc in data
+    .ox2chip_noc_valid                 (ox2chip_noc_valid),      // i-1  noc in valid
+    .ox2chip_noc_rdy                   (ox2chip_noc_rdy  ),      // o-1  noc in ready
+    `endif // OXAGENT_EN
+    //// ^^
+
     `ifndef PITONSYS_NO_MC
     `ifdef PITON_FPGA_MC_DDR3
     `ifndef F1_BOARD
@@ -1244,9 +1270,9 @@ chipset_impl_noc_power_test  chipset_impl (
         `ifdef PITONSYS_DDR4
             .mc_clk_p(mc_clk_p),
             .mc_clk_n(mc_clk_n),
-        `else  // PITONSYS_DDR4                               
+        `else  // PITONSYS_DDR4
             .mc_clk(mc_clk),
-        `endif  // PITONSYS_DDR4                               
+        `endif  // PITONSYS_DDR4
     `endif // ifndef F1_BOARD
     `endif // endif PITON_FPGA_MC_DDR3
     `endif // endif PITONSYS_NO_MC
@@ -1273,13 +1299,13 @@ chipset_impl_noc_power_test  chipset_impl (
 
     // DRAM and I/O interfaces
     `ifndef PITONSYS_NO_MC
-        `ifdef PITON_FPGA_MC_DDR3 
+        `ifdef PITON_FPGA_MC_DDR3
             ,
             .init_calib_complete(init_calib_complete),
             `ifndef F1_BOARD
                 `ifdef PITONSYS_DDR4
-                    .ddr_act_n(ddr_act_n),                    
-                    .ddr_bg(ddr_bg), 
+                    .ddr_act_n(ddr_act_n),
+                    .ddr_bg(ddr_bg),
                 `else // PITONSYS_DDR4
                     .ddr_cas_n(ddr_cas_n),
                     .ddr_ras_n(ddr_ras_n),
@@ -1299,7 +1325,7 @@ chipset_impl_noc_power_test  chipset_impl (
                 `ifndef NEXYSVIDEO_BOARD
                     .ddr_cs_n(ddr_cs_n),
                 `endif // endif NEXYSVIDEO_BOARD
-            
+
                 `ifdef XUPP3R_BOARD
                     .ddr_parity(ddr_parity),
                 `else
@@ -1361,7 +1387,7 @@ chipset_impl_noc_power_test  chipset_impl (
                 .m_axi_bresp(m_axi_bresp),
                 .m_axi_buser(m_axi_buser),
                 .m_axi_bvalid(m_axi_bvalid),
-                .m_axi_bready(m_axi_bready), 
+                .m_axi_bready(m_axi_bready),
 
                 .ddr_ready(ddr_ready)
             `endif //ifndef F1_BOARD
@@ -1394,7 +1420,7 @@ chipset_impl_noc_power_test  chipset_impl (
             .sd_cmd(sd_cmd),
             .sd_dat(sd_dat)
         `endif // endif PITONSYS_SPI
-            `ifdef PITON_FPGA_ETHERNETLITE      
+            `ifdef PITON_FPGA_ETHERNETLITE
                 ,
                 .net_axi_clk        (net_axi_clk            ),
                 .net_phy_rst_n      (net_phy_rst_n          ),
@@ -1411,7 +1437,7 @@ chipset_impl_noc_power_test  chipset_impl (
                 .net_phy_mdio_io    (net_phy_mdio_io        ),
                 .net_phy_mdc        (net_phy_mdc            )
 
-            `endif // PITON_FPGA_ETHERNETLITE   
+            `endif // PITON_FPGA_ETHERNETLITE
     `endif // endif PITONSYS_IOCTRL
 
     `ifdef PITON_ARIANE
@@ -1561,7 +1587,7 @@ chipset_impl_noc_power_test  chipset_impl (
             net_phy_rxd_ff <= net_phy_rxd_f;
         end
 
-        assign net_phy_rxd_inter = net_phy_rxd_ff;                
+        assign net_phy_rxd_inter = net_phy_rxd_ff;
     `endif //PITON_FPGA_ETHERNETLITE
     //-------------------------------------------------------
 
@@ -1574,7 +1600,7 @@ chipset_impl_noc_power_test  chipset_impl (
             .D2(0),
             .SR(0)
             );
-    `else 
+    `else
         ODDR sd_clk_oddr (
             .Q(sd_clk_out),
             .C(sd_clk_out_internal),
@@ -1634,5 +1660,52 @@ chipset_impl_noc_power_test  chipset_impl (
     );
 `endif
 
+
+//// vv
+//  LeWiz Added ILA for Debug
+`ifdef ILA_ENABLE
+`ifdef PITON_NO_CHIP_BRIDGE
+ila_piton_noc ila_piton_noc (
+    .clk        (chipset_clk),  //i-1, clk
+//  .clk        (core_ref_clk), //i-1, clk
+    //TODO: Which is the correct clock? ^^^
+
+////.probe0     (chip2ox_noc_data ),                //i-64
+////.probe1     (chip2ox_noc_valid),                //i-1
+////.probe2     (chip2ox_noc_rdy  ),                //i-1
+    .probe0     (processor_offchip_noc1_data ),     //i-64
+    .probe1     (processor_offchip_noc1_valid),     //i-1
+    .probe2     (processor_offchip_noc1_yummy),     //i-1
+    .probe3     (processor_offchip_noc2_data ),     //i-64
+    .probe4     (processor_offchip_noc2_valid),     //i-1
+    .probe5     (processor_offchip_noc2_yummy),     //i-1
+    .probe6     (processor_offchip_noc3_data ),     //i-64
+    .probe7     (processor_offchip_noc3_valid),     //i-1
+    .probe8     (processor_offchip_noc3_yummy),     //i-1
+
+////.probe9     (ox2chip_noc_data ),                //i-64
+////.probe10    (ox2chip_noc_valid),                //i-1
+////.probe11    (ox2chip_noc_rdy  ),                //i-1
+    .probe9     (offchip_processor_noc1_data ),     //i-64
+    .probe10    (offchip_processor_noc1_valid),     //i-1
+    .probe11    (offchip_processor_noc1_yummy),     //i-1
+    .probe12    (offchip_processor_noc2_data ),     //i-64
+    .probe13    (offchip_processor_noc2_valid),     //i-1
+    .probe14    (offchip_processor_noc2_yummy),     //i-1
+    .probe15    (offchip_processor_noc3_data ),     //i-64
+    .probe16    (offchip_processor_noc3_valid),     //i-1
+    .probe17    (offchip_processor_noc3_yummy),     //i-1
+
+    .probe18    (uart_tx),      //i-1
+    .probe19    (uart_rx),      //i-1
+
+    .probe20    (rst_n),        //i-1
+    .probe21    (1'b0),         //i-1
+    .probe22    (1'b0),         //i-1
+    .probe23    (1'b0)          //i-1
+);
+`endif
+`endif
+//// ^^
 
 endmodule

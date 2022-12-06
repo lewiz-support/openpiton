@@ -381,6 +381,18 @@ module system(
     input                                       btnc,
 `endif
 
+//// vv
+`ifdef OXAGENT_EN
+    input                                       gt_refclk_p,
+    input                                       gt_refclk_n,
+    
+    input                                       gt_rxp_in ,
+    input                                       gt_rxn_in ,
+    output                                      gt_txp_out,
+    output                                      gt_txn_out,
+`endif // OXAGENT_EN
+//// ^^
+
 `ifdef VCU118_BOARD
     // we only have 4 gpio dip switches on this board
     input  [3:0]                                sw,
@@ -687,6 +699,12 @@ assign passthru_pll_rst_n = 1'b1;
 // Sub-module Instances //
 //////////////////////////
 
+//// vv
+`ifdef OXAGENT_EN
+wire reset_cpu_;
+`endif // OXAGENT_EN
+//// ^^
+
 // Piton chip
 chip chip(
     // I/O settings
@@ -704,7 +722,11 @@ chip chip(
     // Clocks and resets
     .core_ref_clk(core_ref_clk),
     .io_clk(io_clk),
-    .rst_n(chip_rst_n),
+`ifdef OXAGENT_EN
+    .rst_n(reset_cpu_),             ////+
+`else // ifndef  OXAGENT_EN
+    .rst_n(chip_rst_n),             ////-
+`endif // OXAGENT_EN
     .pll_rst_n(pll_rst_n_full),
 
     // Chip-level clock enable
@@ -909,8 +931,32 @@ passthru passthru(
 );
 `endif // endif PITONSYS_INC_PASSTHRU
 
+//// vv
+`ifdef OXAGENT_EN
+wire  [63:0]              chip2ox_noc_data;
+wire                      chip2ox_noc_valid;
+wire                      chip2ox_noc_rdy;
+
+wire  [63:0]              ox2chip_noc_data;
+wire                      ox2chip_noc_valid;
+wire                      ox2chip_noc_rdy;
+`endif // OXAGENT_EN
+//// ^^
+
 // Piton chipset
 chipset chipset(
+//// vv
+`ifdef OXAGENT_EN
+    .chip2ox_noc_data                  (chip2ox_noc_data ),
+    .chip2ox_noc_valid                 (chip2ox_noc_valid),
+    .chip2ox_noc_rdy                   (chip2ox_noc_rdy  ),
+
+    .ox2chip_noc_data                  (ox2chip_noc_data ),
+    .ox2chip_noc_valid                 (ox2chip_noc_valid),
+    .ox2chip_noc_rdy                   (ox2chip_noc_rdy  ),
+`endif // OXAGENT_EN
+//// ^^
+	
     // Only need oscillator clock if
     // chipset is generating its own clocks
 `ifdef F1_BOARD
@@ -1217,5 +1263,129 @@ chipset chipset(
 `endif
 
 );
+
+//// vv
+`ifdef OXAGENT_EN
+wire reset_all_;
+wire reset_mii_;
+wire reset_mac_;
+wire reset_rxd_;
+wire reset_oxc_;
+//wire reset_cpu_;  //declared above
+
+wire stat_phy_rst;
+wire stat_phy_good;
+
+
+rstctrl_oxbridge #(
+    .MODE_MII2MAC       (   0),   //Delay TYPE between PHY reset and MAC Reset (0=Reset done, 1=Status good)
+
+    .DELAY_MAC2RXD      (1023),   //Delay Cycles between MAC reset and RX Reset
+    .WIDTH_MAC2RXD      (  10),   //Number of bits to hold above value
+
+    .DELAY_RXD2OXC      (  32),   //Delay Cycles between RX Reset (or MAC reset) and OX Core Reset
+    .WIDTH_RXD2OXC      (   5),   //Number of bits to hold above value
+    .MODE_RXD2OXC       (   0),   //Delay mode for OX Core (0=Starts after RX Reset, 1=Starts after MAC reset)
+
+    .DELAY_OXC2CPU      (  32),   //Delay Cycles between OX Core Reset and CPU reset
+    .WIDTH_OXC2CPU      (   5)    //Number of bits to hold above value
+)
+rstctrl (
+    .clk                (core_ref_clk),
+    .rst_               (sys_rst_n_rect & reset_all_),   //System reset from on-board button or VIO
+
+    .stat_phy_rst       (stat_phy_rst),
+    .stat_phy_good      (stat_phy_good),
+
+    .reset_mii_         (reset_mii_),
+    .reset_mac_         (reset_mac_),
+    .reset_rxd_         (reset_rxd_),
+    .reset_oxc_         (reset_oxc_),
+    .reset_cpu_         (reset_cpu_)
+);
+
+`ifdef SYNTHESIS
+////TODO: ifdef ILA_ENABLE
+vio_gpio vio_gpio (
+    .clk            (core_ref_clk),     //i-1, clock               // input wire clk
+    .probe_in0      (1'b0),             //i-1, LED 0 stand-in
+    .probe_in1      (1'b0),             //i-1, LED 1 stand-in
+    .probe_in2      (1'b0),             //i-1, LED 2 stand-in
+    .probe_in3      (1'b0),             //i-1, LED 3 stand-in
+    .probe_in4      (1'b0),             //i-1, LED 4 stand-in
+    .probe_in5      (1'b0),             //i-1, LED 5 stand-in
+    .probe_in6      (1'b0),             //i-1, LED 6 stand-in
+    .probe_in7      (1'b0),             //i-1, LED 7 stand-in
+    .probe_out0     (reset_all_),       //o-1, BTN N stand-in
+    .probe_out1     ( ),                //o-1, BTN S stand-in
+    .probe_out2     ( ),                //o-1, BTN E stand-in
+    .probe_out3     ( ),                //o-1, BTN W stand-in
+    .probe_out4     ( )                 //o-1, BTN C stand-in
+);
+`else
+assign reset_all_ = 1'b1;
+`endif
+
+//TODO: use parameters?
+oxbridge oxbridge (
+    .reset_mii_         (reset_mii_),
+    .reset_mac_         (reset_mac_),
+    .reset_rxd_         (reset_rxd_),
+    .reset_oxc_         (reset_oxc_),
+
+
+    //Free Running and System Clock
+    .mclk               (core_ref_clk),		//TODO: This clock is only valid for the current, very specific configuration. Make this more general
+    .sclk               (core_ref_clk),
+
+    //GT Reference Clock
+    .gt_refclk_p        (gt_refclk_p),          //i-1, Differential GT Reference Clock (Positive)
+    .gt_refclk_n        (gt_refclk_n),          //i-1, Differential GT Reference Clock (Negative)
+    .gt_refclk          (),                     //o-1, PHY generated ref clock
+
+    //GT Signals
+    .gt_rxp_in          (gt_rxp_in),            //i-1, ANALOG QSFP RX Serial Lane (Positive)
+    .gt_rxn_in          (gt_rxn_in),            //i-1, ANALOG QSFP RX Serial Lane (Negative)
+    .gt_txp_out         (gt_txp_out),           //o-1, ANALOG QSFP TX Serial Lane (Positive)
+    .gt_txn_out         (gt_txn_out),           //o-1, ANALOG QSFP TX Serial Lane (Negative)
+
+    //NOC from CPU Chipset (TX Path)
+    .noc_in_data        (chip2ox_noc_data),     //i-NOC_WIDTH, Incoming NOC Command Data
+    .noc_in_valid       (chip2ox_noc_valid),    //i-1, Incoming NOC Command Data Valid
+    .noc_in_ready       (chip2ox_noc_rdy),      //o-1, OX Bridge Ready for NOC Commands
+
+    //NOC to CPU Chipset (RX Path)
+    .noc_out_data       (ox2chip_noc_data),     //o-NOC_WIDTH, Outgoing NOC Response Data
+    .noc_out_valid      (ox2chip_noc_valid),    //o-1, Outgoing NOC Response Data Valid
+    .noc_out_ready      (ox2chip_noc_rdy),      //i-1, CPU Ready for NOC Responses
+
+    //Status
+    .stat_phy_rst       (stat_phy_rst ),        //o-1, PHY has completed reset for both TX and RX Path
+    .stat_phy_good      (stat_phy_good)         //o-1, PHY has completed reset and both TX & RX status are good
+);
+
+`ifdef SYNTHESIS
+`ifdef ILA_ENABLE
+ila_tiny ila_tiny (
+    .clk        (core_ref_clk),         //i-1, clk
+
+    .probe0     (sys_rst_n_rect),       //i-1
+    .probe1     (reset_mii_),           //i-1
+    .probe2     (stat_phy_rst),         //i-1
+    .probe3     (stat_phy_good),        //i-1
+    .probe4     (reset_mac_),           //i-1
+    .probe5     (reset_rxd_),           //i-1
+    .probe6     (reset_oxc_),           //i-1
+    .probe7     (reset_cpu_),           //i-1
+    .probe8     (chip2ox_noc_valid),    //i-1
+    .probe9     (chip2ox_noc_rdy),      //i-1
+    .probe10    (ox2chip_noc_valid),    //i-1
+    .probe11    (ox2chip_noc_rdy)       //i-1
+);
+`endif
+`endif
+
+`endif // OXAGENT_EN
+//// ^^
 
 endmodule

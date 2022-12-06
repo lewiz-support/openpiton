@@ -87,6 +87,21 @@ module chipset_impl(
     // invalid access inside packet filter
     output                                      invalid_access_o,
 
+    //// vv
+`ifdef OXAGENT_EN
+    // LeWiz Added I/O for OXBridge
+    // TX Path
+    output  [63:0]                              chip2ox_noc_data,
+    output                                      chip2ox_noc_valid,
+    input                                       chip2ox_noc_rdy,
+    
+    // RX Path
+    input   [63:0]                              ox2chip_noc_data,
+    input                                       ox2chip_noc_valid,
+    output                                      ox2chip_noc_rdy,
+`endif // OXAGENT_EN
+    //// ^^
+    
 `ifndef PITONSYS_NO_MC
 `ifdef PITON_FPGA_MC_DDR3
 `ifndef F1_BOARD
@@ -824,6 +839,8 @@ credit_to_valrdy noc3_xbar_to_%s(
 
 `else
 
+////TODO: ifdef OXAGENT_EN, connect bridge in place of fake mem
+
 `include "cross_module.tmp.h"
 
 // Fake Memory Controller
@@ -842,7 +859,19 @@ fake_mem_ctrl fake_mem_ctrl(
 
 `else
 
-`ifdef PITON_FPGA_BRAM_TEST
+//// vv
+`ifdef OXAGENT_EN
+    assign chip2ox_noc_data   = buf_mem_noc2_data;
+    assign chip2ox_noc_valid  = buf_mem_noc2_valid;
+    assign mem_buf_noc2_ready = chip2ox_noc_rdy;
+    
+    assign mem_buf_noc3_data  = ox2chip_noc_data;
+    assign mem_buf_noc3_valid = ox2chip_noc_valid;
+    assign ox2chip_noc_rdy    = buf_mem_noc3_ready;
+
+`elsif PITON_FPGA_BRAM_TEST
+///`ifdef PITON_FPGA_BRAM_TEST
+//// ^^
 
     fake_boot_ctrl  fake_boot_ctrl(
         .clk            ( chipset_clk        ),

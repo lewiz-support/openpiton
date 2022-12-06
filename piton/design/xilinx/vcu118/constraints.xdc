@@ -407,3 +407,36 @@ set_clock_groups -physically_exclusive -group [get_clocks -include_generated_clo
 set_clock_groups -logically_exclusive -group [get_clocks -include_generated_clocks {sd_fast_clk}] -group [get_clocks -include_generated_clocks {sd_slow_clk}]
 set_clock_groups -asynchronous -group [get_clocks -include_generated_clocks chipset_clk_clk_mmcm] -group [get_clocks -filter { NAME =~  "*sd*" }]
 
+####################################################################################################################
+##                                           LeWiz OX_CORE/LMAC/PHY                                               ##
+####################################################################################################################
+
+#156.25 MHz Differential Ref clock, From QSFP_SI570_CLOCK_C_P/N
+set_property PACKAGE_PIN W8 [get_ports gt_refclk_n]
+set_property PACKAGE_PIN W9 [get_ports gt_refclk_p]
+
+#GT Ref Clock is asynchronous to the CPU/Chipset clock
+#set_clock_groups -asynchronous -group [get_clocks gt_refclk_p] -group [get_clocks chipset_clk_clk_mmcm]
+set_clock_groups -asynchronous -group [get_clocks gt_refclk_p] -group [get_clocks chipset_clk_osc_p]
+
+
+#GT I/O Pins
+set_property PACKAGE_PIN Y2 [get_ports {gt_rxp_in[0]}]
+set_property PACKAGE_PIN Y1 [get_ports {gt_rxn_in[0]}]
+set_property PACKAGE_PIN V7 [get_ports {gt_txp_out[0]}]
+set_property PACKAGE_PIN V6 [get_ports {gt_txn_out[0]}]
+
+
+#False path for reset signals
+set_false_path -setup -hold -from [get_pins -hier -regex rstctrl.*reg/C]
+#set_false_path -setup -hold -from [get_pins -hier -regex rstctrl.*reg.*/C]
+#  get_pins -hier -regex [get_cells -hier -filter {REF_NAME == "rstctrl_oxbridge"}].*reg.*/C
+
+#False path for protected clock domain crossings
+set_false_path -setup -hold -through [get_pins -of_objects [get_cells -hier -filter {REF_NAME =~ synchronizer_reg*}] -filter {REF_PIN_NAME =~ "*in*"}]
+
+#TODO: Debug Hub? It seems to connect automatically?
+#set_property C_CLK_INPUT_FREQ_HZ 100000000 [get_debug_cores dbg_hub]
+#set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
+#set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
+#connect_debug_port dbg_hub/clk [get_nets gt_refclk]

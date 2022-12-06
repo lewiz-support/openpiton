@@ -717,6 +717,113 @@ set CHIPSET_RTL_IMPL_FILES [list \
     "${DV_ROOT}/design/chipset/oled/rtl/ssd1306_init.v" \
     "${DV_ROOT}/design/chipset/oled/rtl/ssd1306_spi.v" \
     "${DV_ROOT}/design/chipset/oled/rtl/ssd1306_top.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/BRAM1BELoad.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/BRAM2.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/FIFO2.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkCreditHandlerReceive.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendEndpoint.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendEndpointBRAM.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendReceiver.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendSender.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendSenderPacketBuilder.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendSenderResend.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkReadBurstHandler.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkRMWBurstHandler.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkCacheMachine.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkHandler.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkHandlerTLC.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkHandlerTLUH.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkInputChannelHandler.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkOutputChannelHandler.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkOutputCreditHandling.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkReleaseMachine.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkWriteBurstHandler.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/RegFile.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/RevertReg.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/SizedFIFO.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/SyncFIFO.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/SyncHandshake.v" \
+    "${DV_ROOT}/design/oxbridge/endpoint/rtl/SyncRegister.v" \
+    "${DV_ROOT}/design/oxbridge/fifo/rtl/asynch_fifo.v" \
+    "${DV_ROOT}/design/oxbridge/fifo/rtl/fifo_nx16.v" \
+    "${DV_ROOT}/design/oxbridge/fifo/rtl/fifo_nx256.v" \
+    "${DV_ROOT}/design/oxbridge/fifo/rtl/fifo_nx32.v" \
+    "${DV_ROOT}/design/oxbridge/fifo/rtl/fifo_nx40.v" \
+    "${DV_ROOT}/design/oxbridge/fifo/rtl/fifo_nx64.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D104.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D112.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D120.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D128.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D136.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D144.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D152.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D16.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D160.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D168.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D176.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D184.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D192.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D200.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D208.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D216.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D224.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D232.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D24.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D240.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D248.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D256.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D32.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D40.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D48.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D56.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D64.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D72.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D8.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D80.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D88.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/CRCs/CRC32_D96.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/br_sfifo4x32.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/byte_reordering.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/byte_reordering_wrap.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/eth_crc32_gen.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/fmac_register_if_LE2.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/LMAC_CORE_TOP.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/rx_100g.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/rx_50G.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/rx_cgmii_LE2.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/rx_decap_LE2.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/s2p10.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/tcore_fmac_core_LE2.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/tx_100G_wrap.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/tx_10G_wrap.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/tx_cgmii_LE2.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/tx_encap_100G.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/tx_encap_10G.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/tx_mac10g_crc32x64.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/tx_xgmii_LE2.v" \
+    "${DV_ROOT}/design/oxbridge/lmac/rtl/x2c_ctrl.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/COHERENT_MGR.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/M2OX.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/N2TL.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/N2TL_AQSM.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/N2TL_PRBSM.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/N2TL_RLSSM.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/OX2M.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/OX_CORE.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/OX_RX_PATH.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/OX_TX_PATH.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/PWRUP_CTRL.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/RST_CTRL.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/rtx_buf.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/RTX_MGR.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/seq_mgr.v" \
+    "${DV_ROOT}/design/oxbridge/ox_core/rtl/TL2N.v" \
+    "${DV_ROOT}/design/oxbridge/utility/rtl/delayline.v" \
+    "${DV_ROOT}/design/oxbridge/utility/rtl/rstctrl_phy.v" \
+    "${DV_ROOT}/design/oxbridge/utility/rtl/axis_delay.v" \
+    "${DV_ROOT}/design/oxbridge/utility/rtl/synchronizer.v" \
+    "${DV_ROOT}/design/oxbridge/rtl/rstctrl_oxbridge.v" \
+    "${DV_ROOT}/design/oxbridge/rtl/oxbridge.v" \
 ]
 
 set CHIPSET_INCLUDE_FILES [list \
@@ -748,6 +855,28 @@ set CHIPSET_IP_FILE_PREFIXES [list \
     "${DV_ROOT}/design/chipset/noc_sd_bridge/xilinx/${BOARD}/ip_cores/sd_cache_bram/sd_cache_bram" \
     "${DV_ROOT}/design/common/fpga_bridge/common/xilinx/${BOARD}/ip_cores/afifo_w64/afifo_w64" \
     "${DV_ROOT}/design/common/fpga_bridge/fpga_rcv/xilinx/${BOARD}/ip_cores/afifo_w3/afifo_w3" \
+    "${DV_ROOT}/design/oxbridge/xilinx/${BOARD}/ip_cores/phy_10g_eth_xil/phy_10g_eth_xil" \
+    "${DV_ROOT}/design/oxbridge/xilinx/${BOARD}/ip_cores/ila_piton_noc/ila_piton_noc" \
+    "${DV_ROOT}/design/oxbridge/xilinx/${BOARD}/ip_cores/ila_noc_fmac_mii/ila_noc_fmac_mii" \
+    "${DV_ROOT}/design/oxbridge/xilinx/${BOARD}/ip_cores/ila_tiny/ila_tiny" \
+    "${DV_ROOT}/design/oxbridge/xilinx/${BOARD}/ip_cores/vio_gpio/vio_gpio" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_1024x256_xil/fifo_1024x256_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_1024x32_xil/fifo_1024x32_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_1024x40_xil/fifo_1024x40_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_1024x64_xil/fifo_1024x64_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_128x256_xil/fifo_128x256_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_16kx256_xil/fifo_16kx256_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_16x64_xil/fifo_16x64_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_256x32_xil/fifo_256x32_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_32x16_xil/fifo_32x16_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_4kx16_xil/fifo_4kx16_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_4kx256_xil/fifo_4kx256_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_4kx32_xil/fifo_4kx32_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_4kx64_xil/fifo_4kx64_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_512x64_xil/fifo_512x64_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_64x64_xil/fifo_64x64_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_8kx256_xil/fifo_8kx256_xil" \
+    "${DV_ROOT}/design/oxbridge/fifo/xilinx/${BOARD}/ip_cores/fifo_8kx64_xil/fifo_8kx64_xil" \
 
 ]
 

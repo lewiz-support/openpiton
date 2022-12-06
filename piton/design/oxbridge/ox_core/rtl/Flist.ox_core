@@ -1,0 +1,16 @@
+COHERENT_MGR.v
+M2OX.v
+N2TL.v
+N2TL_AQSM.v
+N2TL_PRBSM.v
+N2TL_RLSSM.v
+OX2M.v
+OX_CORE.v
+OX_RX_PATH.v
+OX_TX_PATH.v
+PWRUP_CTRL.v
+RST_CTRL.v
+rtx_buf.v
+RTX_MGR.v
+seq_mgr.v
+TL2N.v

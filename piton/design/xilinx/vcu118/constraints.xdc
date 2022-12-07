@@ -426,6 +426,8 @@ set_property PACKAGE_PIN Y1 [get_ports {gt_rxn_in[0]}]
 set_property PACKAGE_PIN V7 [get_ports {gt_txp_out[0]}]
 set_property PACKAGE_PIN V6 [get_ports {gt_txn_out[0]}]
 
+#False path for ILA CGMII signals
+set_false_path -setup -hold -through [get_pins -hier -regex .*/ila_fpga/probe(18|19|20|21).*]
 
 #False path for reset signals
 set_false_path -setup -hold -from [get_pins -hier -regex rstctrl.*reg/C]

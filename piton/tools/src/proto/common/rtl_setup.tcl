@@ -717,33 +717,6 @@ set CHIPSET_RTL_IMPL_FILES [list \
     "${DV_ROOT}/design/chipset/oled/rtl/ssd1306_init.v" \
     "${DV_ROOT}/design/chipset/oled/rtl/ssd1306_spi.v" \
     "${DV_ROOT}/design/chipset/oled/rtl/ssd1306_top.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/BRAM1BELoad.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/BRAM2.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/FIFO2.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkCreditHandlerReceive.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendEndpoint.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendEndpointBRAM.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendReceiver.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendSender.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendSenderPacketBuilder.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkOmnixtendSenderResend.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkReadBurstHandler.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkRMWBurstHandler.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkCacheMachine.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkHandler.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkHandlerTLC.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkHandlerTLUH.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkInputChannelHandler.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkOutputChannelHandler.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkOutputCreditHandling.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkTilelinkReleaseMachine.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/mkWriteBurstHandler.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/RegFile.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/RevertReg.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/SizedFIFO.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/SyncFIFO.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/SyncHandshake.v" \
-    "${DV_ROOT}/design/oxbridge/endpoint/rtl/SyncRegister.v" \
     "${DV_ROOT}/design/oxbridge/fifo/rtl/asynch_fifo.v" \
     "${DV_ROOT}/design/oxbridge/fifo/rtl/fifo_nx16.v" \
     "${DV_ROOT}/design/oxbridge/fifo/rtl/fifo_nx256.v" \

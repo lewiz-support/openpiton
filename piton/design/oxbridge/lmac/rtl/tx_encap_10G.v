@@ -387,7 +387,7 @@ module tx_encap_10G(
 
     //synopsys translate_off
     reg [(8*32)-1:0] ascii_state;
-    
+
     always@(state) begin
         case(state)
             IDLE:       ascii_state = "IDLE";

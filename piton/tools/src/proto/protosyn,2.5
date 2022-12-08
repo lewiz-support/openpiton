@@ -141,6 +141,8 @@ def usage():
     print("              Number of jobs to use in Vivado implementation flow", file=sys.stderr)
     print("\n       -h, --help", file=sys.stderr)
     print("              Display this help message and exit", file=sys.stderr)
+    print("\n       --skip-test", file=sys.stderr)
+    print("              Skip pre-test simulation of BRAM Tests", file=sys.stderr)
     print("\n", file=sys.stderr)
 
 def slurm_launch(cmd, log, tpn, mem_mb, time_str, jname, dep_list) :
@@ -477,6 +479,7 @@ def setParserOptions(parser):
     parser.add_option("--swait", dest="swait", action="store_true", default=False)
     parser.add_option("--axi4_mem", dest="axi4_mem", action="store_true", default=False)
     parser.add_option("--zeroer_off", dest="zeroer_off", action="store_true", default=False)
+    parser.add_option("--skip-test", dest="skip_test", action="store_true", default=False)
 
     return parser
 
@@ -688,6 +691,9 @@ def main():
         run_fpga_impl           = False
         run_sim                 = False # maybe change later
         run_map_test            = False # maybe change later
+        
+    if options.skip_test == True:
+        run_map_test            = False
 
     ##################################
     # Setting directory structure
@@ -849,17 +855,22 @@ def main():
         print_info("Using core clock frequency: %s MHz" % design_data["BOARDS"][options.board]["FREQ"])
         div = calcUARTLatch(design_data, options.board)
         ##os.system('sims -sys=manycore ' + config + ' -vcs_run -midas_args=-DUART_DIV_LATCH=0x%x %s > %s/simulation.log' % (div, options.test_name, rc_dir.log))
-        os.system('sims -sys=manycore ' + config + ' -vlt_run -rtl_timeout 10000000 -midas_args=-DUART_DIV_LATCH=0x%x %s > %s/simulation.log' % (div, options.test_name, rc_dir.log))
+        
+        if options.skip_test:                                                                                                                                                       ## +
+            os.system('sims -sys=manycore ' + config + ' -vlt_run -rtl_timeout 10 -midas_args=-DUART_DIV_LATCH=0x%x %s > %s/simulation.log' % (div, options.test_name, rc_dir.log)) ## +
+            print_info("Test Skipped...")                                                                                                                                           ## +
+        else:                                                                                                                                                                       ## +
+            os.system('sims -sys=manycore ' + config + ' -vlt_run -rtl_timeout 10000000 -midas_args=-DUART_DIV_LATCH=0x%x %s > %s/simulation.log' % (div, options.test_name, rc_dir.log))
 
-        f = open('%s/simulation.log' % rc_dir.log, 'r')
-        cont = f.read()
-        f.close()
-        match = re.search(r'(HIT GOOD TRAP)', cont)
-        if match == None:
-            print_error("Test failed!")
-            sys.exit(1)
-        else:
-            print_info("Test Passed!")
+            f = open('%s/simulation.log' % rc_dir.log, 'r')
+            cont = f.read()
+            f.close()
+            match = re.search(r'(HIT GOOD TRAP)', cont)
+            if match == None:
+                print_error("Test failed!")
+                sys.exit(1)
+            else:
+                print_info("Test Passed!")
 
     ###################################
     # Make Mapping

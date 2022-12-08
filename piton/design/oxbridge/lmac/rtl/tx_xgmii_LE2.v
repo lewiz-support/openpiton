@@ -166,7 +166,7 @@ module tx_xgmii(
     //-------------------------------------------------------------------------------
     //   FMAC_TX_PKT_CNT REGISTER
     //-------------------------------------------------------------------------------
-    
+
     always@ (posedge clk156) begin
         if (!rst_) begin
             sent	<=	1'b0;
@@ -193,7 +193,7 @@ module tx_xgmii(
 
     //detect the capture en for clk250 (if see 2 zeroes in a row)
     wire	capture_en_clk250 = capture_en0_clk250 & capture_en1_clk250;
-    
+
     always @ (posedge clk250) begin
         //if see 2 zero in a row (not updating by clk125), can capture the data
         capture_en0_clk250	<= !sent;
